@@ -1,0 +1,138 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="icon" href="{{url_for('static', filename='img/docker_compose.png')}}" type="image/png" sizes="16x16">
+    <title>Docker compose - Projeto de deploy</title>
+</head>
+
+<body>
+    <div class="container m-auto pt-5" style="text-align: center;">
+        <img src="{{url_for('static', filename='img/docker_compose.png')}}" alt="Docker logo image"
+            style="height: 22em;">
+        <br />
+        <div class="p-3">
+            <span style="color: #13B9EA; font-size: 2em;">Projeto de deploy - docker compose</span>
+            <br>
+            <span style="color: #394D54; font-size: 1.3em">Listagem, cadastro e remoção</span>
+            <br>
+        </div>
+
+        <div class="my-3">
+
+            <a class="btn btn-link" href="{{ url_for('index') }}" style="font-size: 1.4em">Home/Atualizar lista <i
+                    class="fas fa-sync"></i></a>
+            <button type="button" class="btn btn-link" style="font-size: 1.4em" data-toggle="modal"
+                data-target="#cadastroModal">
+                Cadastrar tecnologia <i class="far fa-edit"></i>
+            </button>
+            <a class="btn btn-link " href="{{ url_for('remover_registros') }}" style="font-size: 1.4em">Deletar
+                dados/Limpar lista <i class="fas fa-eraser"></i></a>
+        </div>
+
+
+        <!-- MODAL DE CADASTRO -->
+        <div class="modal fade" id="cadastroModal" tabindex="-1" role="dialog" aria-labelledby="cadastroModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cadastroModalLabel">Cadastro de registro</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form action="{{ url_for('cadastrar_registro') }}" method="POST">
+                            <div class="form-group">
+                                <label for="nome_tecnologia">Tecnologia</label>
+                                <input type="text" class="form-control" id="nome_tecnologia" name="nome_tecnologia"
+                                    placeholder="Digite uma tecnologia">
+                                <label for="descrisao_tecnologia">Descrição</label>
+                                <input type="text" class="form-control" id="descrisao_tecnologia"
+                                    name="descrisao_tecnologia" placeholder="Digite uma tecnologia">
+                            </div>
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% if registros == None %}
+        <div class="alert alert-info" role="alert">Sem registros a ser informado!</div>
+        {% else %}
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" class="col-sm-0" style="text-align:end; padding-right: 3em;">ID</th>
+                    <th scaope="col" class="col-sm-0" style="text-align:end; padding-right: 4em;">Tecnologia</th>
+                    <th scope="col" class="col-sm-8">Descrição</th>
+                    <th scope="col" class="col-sm-4" style="text-align:end; padding-right: 10em;">Opções</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tec in registros %}
+                <tr>
+                    <th scope="row">{{ tec[0] }}</th>
+                    <td>{{ tec[1] }}</td>
+                    <td >{{ tec[2] }}</td>
+                    <td style="text-align: end;"><a data-toggle="modal" data-target="#updateModal{{tec[0]}}" href="{{ url_for('atualizar_registro', id_registro=tec[0]) }}">Editar - <i class="fas fa-pen"></i></a>
+
+                    <div class="modal fade" id="updateModal{{tec[0]}}" tabindex="2" role="dialog"
+                        aria-labelledby="updateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel">Atualização de registro</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="text-align: start !important;">
+
+                                    <form action="{{ url_for('atualizar_registro', id_registro=tec[0]) }}" method="POST">
+                                        <div class="form-group">
+                                            <label for="nome_tecnologia">Tecnologia</label>
+                                            <input type="text" class="form-control" id="nome_tecnologia"
+                                                name="nome_tecnologia" value="{{tec[1]}}">
+                                            <label for="descrisao_tecnologia">Descrição</label>
+                                            <input type="text" class="form-control" id="descrisao_tecnologia"
+                                                name="descrisao_tecnologia" value="{{tec[2]}}">
+                                        </div>
+
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Fechar</button>
+                                            <button type="submit" class="btn btn-primary">Atualizar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="px-3" href="{{ url_for('remover_registro', id_registro=tec[0])}}">Deletar - <i class="fas fa-backspace"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+
+        {% include 'script.html' %}
+    </div>
+</body>
+
+</html>
