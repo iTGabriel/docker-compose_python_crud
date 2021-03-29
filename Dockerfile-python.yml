@@ -1,0 +1,18 @@
+# Escolhendo a imagem que ira utilizar
+FROM python:3.8
+
+# Definindo a variavel de ambiente
+ENV desenvolvedor='itgabriel'
+
+# Copiando o conteúdo da pasta local para o container
+COPY ./ /ggdocker
+
+# Trabalhando a partir de '/ggdocker'
+WORKDIR /ggdocker
+
+# Instalando pacotes python para o funcionamento do projeto
+# A cada RUN, cria-se uma nova camada na imagem
+RUN pip install -r requirements.txt
+
+# Executando o script python
+CMD python main.py

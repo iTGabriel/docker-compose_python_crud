@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  mysqldb:
+    image: mysql
+    labels: 
+      author: "itgabriel" 
+    container_name: gg_mysql
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 0
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: docker_project
+      MYSQL_USER: itgabriel
+      MYSQL_PASSWORD: tester
+    ports:
+      - 3306:3306
+    restart: always
+
+
+  python_flask:
+    build:
+      context: ./
+      dockerfile: Dockerfile-python.yml
+    labels: 
+      author: "itgabriel" 
+    container_name: gg_python_flask
+    depends_on: 
+      - mysqldb
+    restart: always
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 15s
+        max_attempts: 0
+      resources:
+        limits:
+          cpus: '0.60'
+          memory: 1G
+    ports: 
+      - "8000:8000"
+    links: 
+      - "mysqldb:database"
