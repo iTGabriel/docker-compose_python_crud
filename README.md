@@ -54,15 +54,13 @@ porém caso for via docker-compose, preencher os campos vazios.
 
 ## Em funcionamento
 
-```
-    ## - Listagem dos arquivos
-    ![](./images/start1.JPG)
+## - Listagem dos arquivos
+![](./images/start1.JPG)
 
-    ## - Iniciando o docker-compose
-    ![](./images/start2.JPG)
-    ![](./images/start3.JPG)
+## - Iniciando o docker-compose
+![](./images/start2.JPG)
+![](./images/start3.JPG)
 
-    ## - Projeto em andamento
-    ![](./images/start4.JPG)
-    ![](./images/start5.JPG)
-```
+## - Projeto em andamento
+![](./images/start4.JPG)
+![](./images/start5.JPG)
