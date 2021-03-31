@@ -65,9 +65,4 @@ porém caso for via docker-compose, preencher os campos vazios.
     ## - Projeto em andamento
     ![](./images/start4.JPG)
     ![](./images/start5.JPG)
-
-
-
-
-
 ```
