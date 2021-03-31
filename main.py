@@ -42,4 +42,4 @@ def remover_registros():
 
 mysql_services.preparar_db()
 if __name__ == '__main__':
-    app.run(os.getenv("FLASK_ADDRESS"), os.getenv("FLASK_PORT"), use_reloader=True)
+    app.run(os.getenv("FLASK_ADDRESS"), os.getenv("FLASK_PORT"))
